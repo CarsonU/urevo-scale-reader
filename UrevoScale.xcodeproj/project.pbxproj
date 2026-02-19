@@ -1,0 +1,589 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		03836C0DEC2BCF321B8AC719 /* StabilizerConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D1F4DC797866707A55C983B /* StabilizerConfig.swift */; };
+		0558F27D07FADB96ECB5C9A7 /* WeightStabilizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294DC43A2E8C578168FA32AA /* WeightStabilizer.swift */; };
+		0AFA29898583BF3BEBBD932A /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAD2AE0B083F2CD76FF5769 /* OnboardingView.swift */; };
+		18E71BA8E4854ED1C682ED31 /* TimestampFormatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FD4E7357A34B7FCCB3772AE /* TimestampFormatters.swift */; };
+		1A0DD5DA7CA29F800A0DA923 /* ScanError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 799A96138D5AA5A07DB2FD29 /* ScanError.swift */; };
+		1DA5AE9A9F0FF656E6C49DB2 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DC8A87B48357058B68DEF3 /* SettingsView.swift */; };
+		28FA9717ECB3097124E5F447 /* AppStateStoreIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F80237C78D556B1FEC9318 /* AppStateStoreIntegrationTests.swift */; };
+		3060D706DF6C43D33F5DFEC8 /* WeightRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0726A2DFE3B0632B2DEB371C /* WeightRepository.swift */; };
+		33E8DECC6CAC6A09CB28CC63 /* WeightEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB046AFE19A5F0ACB88ED60 /* WeightEntry.swift */; };
+		380A32A42FDDF7B59B34CF71 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 594C9526FA840ADD2E9A6630 /* Foundation.framework */; };
+		48613C4D7BB5D0D016B317E8 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54157DA977DE00D35BEABB8 /* ActivityView.swift */; };
+		4CC1570230E01D47A102B295 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 39559A00DF5C35E95FE85AFA /* HealthKit.framework */; };
+		4FD5C571E0D1953273843C1A /* WeightStabilizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94C245DE6FFF4CB316C6B29E /* WeightStabilizerTests.swift */; };
+		524D42B2F8539D14C08C32D6 /* ScaleScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EB92F14390A8ADF0D36FC92 /* ScaleScanner.swift */; };
+		59BA966B1FEAEBACFA6EBCC9 /* EntrySource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3180F81DF30502B4D9FD6498 /* EntrySource.swift */; };
+		6A5C564A93A2FA54D530FEF4 /* UrevoScaleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4FC283ACCBCA6D18439547 /* UrevoScaleApp.swift */; };
+		6C32C7AA7D198BFD3F65481B /* HistoryEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7DD761EAD9959D4E48C7ED /* HistoryEditView.swift */; };
+		6C79232517A6338DB0452356 /* HealthKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFECA519076BCC39FF17513 /* HealthKitService.swift */; };
+		730AB637A8EED6B5CEAA87C0 /* ScaleAdvertisement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B25561E50F251373A05ABEF /* ScaleAdvertisement.swift */; };
+		751F64A43CFE33EF15876D0A /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B256F0979ECD17347393CEFF /* CoreBluetooth.framework */; };
+		7AB71B9CC04FE274CFE960F9 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E60E49720D9AE18CEA482E3 /* HistoryView.swift */; };
+		7C470CB540EA1CA2672056AD /* BluetoothScaleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 056156B746EC4A999DECD74F /* BluetoothScaleService.swift */; };
+		8FF666C0E87668521F9E5E5F /* ScaleProtocolDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFBD2AAA3563709844CAE719 /* ScaleProtocolDecoder.swift */; };
+		908D24D8A148183A9C414F2E /* WeightProtocolDecoderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A61D07E99AC8240AD94E8C /* WeightProtocolDecoderTests.swift */; };
+		91C6E5E3FA5B3D3DED6DB66F /* ScanState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05E0B9690A1E4F5B58D82631 /* ScanState.swift */; };
+		AA913D1B68380B188196607A /* WeighView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45537D3EE5D1F305F7D67A6D /* WeighView.swift */; };
+		AF6D447723F51E16C12EA048 /* WeightFormatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94A32BB2D3F982C0C9B34EF /* WeightFormatting.swift */; };
+		B1F843028161715D49076CBD /* AppStateStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E032AC205313830F1F4068D9 /* AppStateStore.swift */; };
+		B71C712C1AE6587FDF96CB08 /* AppDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = B899B1A9A978AC96BCA1B167 /* AppDefaults.swift */; };
+		BE4E30D79903414DD68D08C2 /* CSVServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3C87819BFD72328F99652E /* CSVServiceTests.swift */; };
+		CA9D0AB23CEAA0CAB0D598D1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 594C9526FA840ADD2E9A6630 /* Foundation.framework */; };
+		CB72F0E62D5AD97806ABAFC7 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A558B4A9D3DAB1AEB99C72 /* PersistenceController.swift */; };
+		D6CE16D92DBFF77E52DC5948 /* WeightFormattingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0862F499BB7063D56B59177 /* WeightFormattingTests.swift */; };
+		DEAF38544853B675666124B6 /* ImportResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A665A8936533A39160402EB2 /* ImportResult.swift */; };
+		F115BAD128A83CBD51ADDCA8 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93620E5A4057C73CF71A38FA /* RootView.swift */; };
+		F1997FA9E8F909B7C31B87D1 /* DisplayUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2FB4D43F26875E9ED808C8D /* DisplayUnit.swift */; };
+		F73210D2F85FB6B8DBE007BD /* CSVService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CDB58ECDF578D823612130 /* CSVService.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		9C0760D930C5BEDF4BB38655 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 191714A7BBF862DDBAE94305 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8B62EA2E5EF295D26BBFE6B3;
+			remoteInfo = UrevoScale;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		056156B746EC4A999DECD74F /* BluetoothScaleService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BluetoothScaleService.swift; path = UrevoScale/Services/BluetoothScaleService.swift; sourceTree = "<group>"; };
+		05E0B9690A1E4F5B58D82631 /* ScanState.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ScanState.swift; path = UrevoScale/Models/ScanState.swift; sourceTree = "<group>"; };
+		0726A2DFE3B0632B2DEB371C /* WeightRepository.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WeightRepository.swift; path = UrevoScale/Services/WeightRepository.swift; sourceTree = "<group>"; };
+		07CDB58ECDF578D823612130 /* CSVService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CSVService.swift; path = UrevoScale/Services/CSVService.swift; sourceTree = "<group>"; };
+		08F80237C78D556B1FEC9318 /* AppStateStoreIntegrationTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AppStateStoreIntegrationTests.swift; path = UrevoScaleTests/AppStateStoreIntegrationTests.swift; sourceTree = "<group>"; };
+		11DC8A87B48357058B68DEF3 /* SettingsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SettingsView.swift; path = UrevoScale/Views/SettingsView.swift; sourceTree = "<group>"; };
+		1BE9732C34967431FE94D90D /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; name = Info.plist; path = UrevoScale/Resources/Info.plist; sourceTree = "<group>"; };
+		1D7DD761EAD9959D4E48C7ED /* HistoryEditView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HistoryEditView.swift; path = UrevoScale/Views/HistoryEditView.swift; sourceTree = "<group>"; };
+		294DC43A2E8C578168FA32AA /* WeightStabilizer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WeightStabilizer.swift; path = UrevoScale/Services/WeightStabilizer.swift; sourceTree = "<group>"; };
+		2FAD2AE0B083F2CD76FF5769 /* OnboardingView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OnboardingView.swift; path = UrevoScale/Views/OnboardingView.swift; sourceTree = "<group>"; };
+		3180F81DF30502B4D9FD6498 /* EntrySource.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = EntrySource.swift; path = UrevoScale/Models/EntrySource.swift; sourceTree = "<group>"; };
+		36683598C253364ABA0D2689 /* UrevoScaleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UrevoScaleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		39559A00DF5C35E95FE85AFA /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = "<group>"; };
+		3C3C87819BFD72328F99652E /* CSVServiceTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CSVServiceTests.swift; path = UrevoScaleTests/CSVServiceTests.swift; sourceTree = "<group>"; };
+		3E60E49720D9AE18CEA482E3 /* HistoryView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HistoryView.swift; path = UrevoScale/Views/HistoryView.swift; sourceTree = "<group>"; };
+		3EB92F14390A8ADF0D36FC92 /* ScaleScanner.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ScaleScanner.swift; path = UrevoScale/Services/ScaleScanner.swift; sourceTree = "<group>"; };
+		3FD4E7357A34B7FCCB3772AE /* TimestampFormatters.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TimestampFormatters.swift; path = UrevoScale/Utilities/TimestampFormatters.swift; sourceTree = "<group>"; };
+		45537D3EE5D1F305F7D67A6D /* WeighView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WeighView.swift; path = UrevoScale/Views/WeighView.swift; sourceTree = "<group>"; };
+		4D1F4DC797866707A55C983B /* StabilizerConfig.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = StabilizerConfig.swift; path = UrevoScale/Models/StabilizerConfig.swift; sourceTree = "<group>"; };
+		4E928EE394BE469612721D0E /* UrevoScale.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; name = UrevoScale.entitlements; path = UrevoScale/Resources/UrevoScale.entitlements; sourceTree = "<group>"; };
+		594C9526FA840ADD2E9A6630 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		5B25561E50F251373A05ABEF /* ScaleAdvertisement.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ScaleAdvertisement.swift; path = UrevoScale/Models/ScaleAdvertisement.swift; sourceTree = "<group>"; };
+		5CFECA519076BCC39FF17513 /* HealthKitService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HealthKitService.swift; path = UrevoScale/Services/HealthKitService.swift; sourceTree = "<group>"; };
+		77A558B4A9D3DAB1AEB99C72 /* PersistenceController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PersistenceController.swift; path = UrevoScale/Services/PersistenceController.swift; sourceTree = "<group>"; };
+		799A96138D5AA5A07DB2FD29 /* ScanError.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ScanError.swift; path = UrevoScale/Models/ScanError.swift; sourceTree = "<group>"; };
+		7DB046AFE19A5F0ACB88ED60 /* WeightEntry.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WeightEntry.swift; path = UrevoScale/Models/WeightEntry.swift; sourceTree = "<group>"; };
+		80402F377C278851C1BA18DD /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; name = Info.plist; path = UrevoScaleTests/Info.plist; sourceTree = "<group>"; };
+		93620E5A4057C73CF71A38FA /* RootView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RootView.swift; path = UrevoScale/Views/RootView.swift; sourceTree = "<group>"; };
+		94C245DE6FFF4CB316C6B29E /* WeightStabilizerTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WeightStabilizerTests.swift; path = UrevoScaleTests/WeightStabilizerTests.swift; sourceTree = "<group>"; };
+		A2FB4D43F26875E9ED808C8D /* DisplayUnit.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DisplayUnit.swift; path = UrevoScale/Models/DisplayUnit.swift; sourceTree = "<group>"; };
+		A665A8936533A39160402EB2 /* ImportResult.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ImportResult.swift; path = UrevoScale/Models/ImportResult.swift; sourceTree = "<group>"; };
+		B256F0979ECD17347393CEFF /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = "<group>"; };
+		B54157DA977DE00D35BEABB8 /* ActivityView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ActivityView.swift; path = UrevoScale/Views/ActivityView.swift; sourceTree = "<group>"; };
+		B6A61D07E99AC8240AD94E8C /* WeightProtocolDecoderTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WeightProtocolDecoderTests.swift; path = UrevoScaleTests/WeightProtocolDecoderTests.swift; sourceTree = "<group>"; };
+		B899B1A9A978AC96BCA1B167 /* AppDefaults.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AppDefaults.swift; path = UrevoScale/Utilities/AppDefaults.swift; sourceTree = "<group>"; };
+		CC4FC283ACCBCA6D18439547 /* UrevoScaleApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = UrevoScaleApp.swift; path = UrevoScale/App/UrevoScaleApp.swift; sourceTree = "<group>"; };
+		CFBD2AAA3563709844CAE719 /* ScaleProtocolDecoder.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ScaleProtocolDecoder.swift; path = UrevoScale/Services/ScaleProtocolDecoder.swift; sourceTree = "<group>"; };
+		D0862F499BB7063D56B59177 /* WeightFormattingTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WeightFormattingTests.swift; path = UrevoScaleTests/WeightFormattingTests.swift; sourceTree = "<group>"; };
+		DC61ABAE2FB219AD4BA11226 /* UrevoScale.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UrevoScale.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E032AC205313830F1F4068D9 /* AppStateStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AppStateStore.swift; path = UrevoScale/Store/AppStateStore.swift; sourceTree = "<group>"; };
+		F94A32BB2D3F982C0C9B34EF /* WeightFormatting.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WeightFormatting.swift; path = UrevoScale/Utilities/WeightFormatting.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2A6A4FD463CD476E66B5D1FF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CA9D0AB23CEAA0CAB0D598D1 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F68129A38DEC8EC95CF05CEC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				380A32A42FDDF7B59B34CF71 /* Foundation.framework in Frameworks */,
+				751F64A43CFE33EF15876D0A /* CoreBluetooth.framework in Frameworks */,
+				4CC1570230E01D47A102B295 /* HealthKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		18DD4F9C8A00B0751F53EE5C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DC61ABAE2FB219AD4BA11226 /* UrevoScale.app */,
+				36683598C253364ABA0D2689 /* UrevoScaleTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		294E8C24FB4627F177A48A58 /* UrevoScaleTests */ = {
+			isa = PBXGroup;
+			children = (
+				08F80237C78D556B1FEC9318 /* AppStateStoreIntegrationTests.swift */,
+				3C3C87819BFD72328F99652E /* CSVServiceTests.swift */,
+				D0862F499BB7063D56B59177 /* WeightFormattingTests.swift */,
+				B6A61D07E99AC8240AD94E8C /* WeightProtocolDecoderTests.swift */,
+				94C245DE6FFF4CB316C6B29E /* WeightStabilizerTests.swift */,
+				80402F377C278851C1BA18DD /* Info.plist */,
+			);
+			name = UrevoScaleTests;
+			sourceTree = "<group>";
+		};
+		3C6518FEE79F96186104353C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E0B317173427C36FEF527F5A /* iOS */,
+				B256F0979ECD17347393CEFF /* CoreBluetooth.framework */,
+				39559A00DF5C35E95FE85AFA /* HealthKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		88E4842C34E3DBBF9B07F42E /* UrevoScale */ = {
+			isa = PBXGroup;
+			children = (
+				CC4FC283ACCBCA6D18439547 /* UrevoScaleApp.swift */,
+				A2FB4D43F26875E9ED808C8D /* DisplayUnit.swift */,
+				3180F81DF30502B4D9FD6498 /* EntrySource.swift */,
+				A665A8936533A39160402EB2 /* ImportResult.swift */,
+				5B25561E50F251373A05ABEF /* ScaleAdvertisement.swift */,
+				799A96138D5AA5A07DB2FD29 /* ScanError.swift */,
+				05E0B9690A1E4F5B58D82631 /* ScanState.swift */,
+				4D1F4DC797866707A55C983B /* StabilizerConfig.swift */,
+				7DB046AFE19A5F0ACB88ED60 /* WeightEntry.swift */,
+				056156B746EC4A999DECD74F /* BluetoothScaleService.swift */,
+				07CDB58ECDF578D823612130 /* CSVService.swift */,
+				5CFECA519076BCC39FF17513 /* HealthKitService.swift */,
+				77A558B4A9D3DAB1AEB99C72 /* PersistenceController.swift */,
+				CFBD2AAA3563709844CAE719 /* ScaleProtocolDecoder.swift */,
+				3EB92F14390A8ADF0D36FC92 /* ScaleScanner.swift */,
+				0726A2DFE3B0632B2DEB371C /* WeightRepository.swift */,
+				294DC43A2E8C578168FA32AA /* WeightStabilizer.swift */,
+				E032AC205313830F1F4068D9 /* AppStateStore.swift */,
+				B899B1A9A978AC96BCA1B167 /* AppDefaults.swift */,
+				3FD4E7357A34B7FCCB3772AE /* TimestampFormatters.swift */,
+				F94A32BB2D3F982C0C9B34EF /* WeightFormatting.swift */,
+				B54157DA977DE00D35BEABB8 /* ActivityView.swift */,
+				1D7DD761EAD9959D4E48C7ED /* HistoryEditView.swift */,
+				3E60E49720D9AE18CEA482E3 /* HistoryView.swift */,
+				2FAD2AE0B083F2CD76FF5769 /* OnboardingView.swift */,
+				93620E5A4057C73CF71A38FA /* RootView.swift */,
+				11DC8A87B48357058B68DEF3 /* SettingsView.swift */,
+				45537D3EE5D1F305F7D67A6D /* WeighView.swift */,
+				1BE9732C34967431FE94D90D /* Info.plist */,
+				4E928EE394BE469612721D0E /* UrevoScale.entitlements */,
+			);
+			name = UrevoScale;
+			sourceTree = "<group>";
+		};
+		B9E3287C1D0831DD53F6BD43 = {
+			isa = PBXGroup;
+			children = (
+				18DD4F9C8A00B0751F53EE5C /* Products */,
+				3C6518FEE79F96186104353C /* Frameworks */,
+				88E4842C34E3DBBF9B07F42E /* UrevoScale */,
+				294E8C24FB4627F177A48A58 /* UrevoScaleTests */,
+			);
+			sourceTree = "<group>";
+		};
+		E0B317173427C36FEF527F5A /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				594C9526FA840ADD2E9A6630 /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		5DBBB941C4323FAF443D5BC9 /* UrevoScaleTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 036A16ED566C9DEEAFE9B14F /* Build configuration list for PBXNativeTarget "UrevoScaleTests" */;
+			buildPhases = (
+				080369EC9AA9AEFA9DDE7AE6 /* Sources */,
+				2A6A4FD463CD476E66B5D1FF /* Frameworks */,
+				B8C9D67A42A6002037B32856 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				43BFA708B288EB25F3359D73 /* PBXTargetDependency */,
+			);
+			name = UrevoScaleTests;
+			productName = UrevoScaleTests;
+			productReference = 36683598C253364ABA0D2689 /* UrevoScaleTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		8B62EA2E5EF295D26BBFE6B3 /* UrevoScale */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 537B4BF9F0DDBD7C65A6F8BF /* Build configuration list for PBXNativeTarget "UrevoScale" */;
+			buildPhases = (
+				CF4A9F86F934A1F2A1C81E0C /* Sources */,
+				F68129A38DEC8EC95CF05CEC /* Frameworks */,
+				A0D6472C8E316C157EDBA389 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = UrevoScale;
+			productName = UrevoScale;
+			productReference = DC61ABAE2FB219AD4BA11226 /* UrevoScale.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		191714A7BBF862DDBAE94305 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					5DBBB941C4323FAF443D5BC9 = {
+						ProvisioningStyle = Automatic;
+					};
+					8B62EA2E5EF295D26BBFE6B3 = {
+						DevelopmentTeam = NAFQNS48MH;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 179662D92FA8B129BFB238EC /* Build configuration list for PBXProject "UrevoScale" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = B9E3287C1D0831DD53F6BD43;
+			productRefGroup = 18DD4F9C8A00B0751F53EE5C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8B62EA2E5EF295D26BBFE6B3 /* UrevoScale */,
+				5DBBB941C4323FAF443D5BC9 /* UrevoScaleTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A0D6472C8E316C157EDBA389 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B8C9D67A42A6002037B32856 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		080369EC9AA9AEFA9DDE7AE6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				28FA9717ECB3097124E5F447 /* AppStateStoreIntegrationTests.swift in Sources */,
+				BE4E30D79903414DD68D08C2 /* CSVServiceTests.swift in Sources */,
+				D6CE16D92DBFF77E52DC5948 /* WeightFormattingTests.swift in Sources */,
+				908D24D8A148183A9C414F2E /* WeightProtocolDecoderTests.swift in Sources */,
+				4FD5C571E0D1953273843C1A /* WeightStabilizerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CF4A9F86F934A1F2A1C81E0C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6A5C564A93A2FA54D530FEF4 /* UrevoScaleApp.swift in Sources */,
+				F1997FA9E8F909B7C31B87D1 /* DisplayUnit.swift in Sources */,
+				59BA966B1FEAEBACFA6EBCC9 /* EntrySource.swift in Sources */,
+				DEAF38544853B675666124B6 /* ImportResult.swift in Sources */,
+				730AB637A8EED6B5CEAA87C0 /* ScaleAdvertisement.swift in Sources */,
+				1A0DD5DA7CA29F800A0DA923 /* ScanError.swift in Sources */,
+				91C6E5E3FA5B3D3DED6DB66F /* ScanState.swift in Sources */,
+				03836C0DEC2BCF321B8AC719 /* StabilizerConfig.swift in Sources */,
+				33E8DECC6CAC6A09CB28CC63 /* WeightEntry.swift in Sources */,
+				7C470CB540EA1CA2672056AD /* BluetoothScaleService.swift in Sources */,
+				F73210D2F85FB6B8DBE007BD /* CSVService.swift in Sources */,
+				6C79232517A6338DB0452356 /* HealthKitService.swift in Sources */,
+				CB72F0E62D5AD97806ABAFC7 /* PersistenceController.swift in Sources */,
+				8FF666C0E87668521F9E5E5F /* ScaleProtocolDecoder.swift in Sources */,
+				524D42B2F8539D14C08C32D6 /* ScaleScanner.swift in Sources */,
+				3060D706DF6C43D33F5DFEC8 /* WeightRepository.swift in Sources */,
+				0558F27D07FADB96ECB5C9A7 /* WeightStabilizer.swift in Sources */,
+				B1F843028161715D49076CBD /* AppStateStore.swift in Sources */,
+				B71C712C1AE6587FDF96CB08 /* AppDefaults.swift in Sources */,
+				18E71BA8E4854ED1C682ED31 /* TimestampFormatters.swift in Sources */,
+				AF6D447723F51E16C12EA048 /* WeightFormatting.swift in Sources */,
+				48613C4D7BB5D0D016B317E8 /* ActivityView.swift in Sources */,
+				6C32C7AA7D198BFD3F65481B /* HistoryEditView.swift in Sources */,
+				7AB71B9CC04FE274CFE960F9 /* HistoryView.swift in Sources */,
+				0AFA29898583BF3BEBBD932A /* OnboardingView.swift in Sources */,
+				F115BAD128A83CBD51ADDCA8 /* RootView.swift in Sources */,
+				1DA5AE9A9F0FF656E6C49DB2 /* SettingsView.swift in Sources */,
+				AA913D1B68380B188196607A /* WeighView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		43BFA708B288EB25F3359D73 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = UrevoScale;
+			target = 8B62EA2E5EF295D26BBFE6B3 /* UrevoScale */;
+			targetProxy = 9C0760D930C5BEDF4BB38655 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		10127EC221A559B05FBB1B4C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_ENTITLEMENTS = UrevoScale/Resources/UrevoScale.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = NAFQNS48MH;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = UrevoScale/Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.carson.urevoscale;
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		51091F85F15E9B57A8F81F7F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		643A8039EC9E6D54129C8C41 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = UrevoScaleTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.carson.urevoscaleTests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/UrevoScale.app/UrevoScale";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		9008984A6B9437A4071F31D9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = UrevoScaleTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.carson.urevoscaleTests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/UrevoScale.app/UrevoScale";
+			};
+			name = Debug;
+		};
+		9559B76DB6FF4E4027E57A4D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		D38DFD6BA1CD34D1225BB9A8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_ENTITLEMENTS = UrevoScale/Resources/UrevoScale.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = NAFQNS48MH;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = UrevoScale/Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.carson.urevoscale;
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		036A16ED566C9DEEAFE9B14F /* Build configuration list for PBXNativeTarget "UrevoScaleTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				643A8039EC9E6D54129C8C41 /* Release */,
+				9008984A6B9437A4071F31D9 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		179662D92FA8B129BFB238EC /* Build configuration list for PBXProject "UrevoScale" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9559B76DB6FF4E4027E57A4D /* Debug */,
+				51091F85F15E9B57A8F81F7F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		537B4BF9F0DDBD7C65A6F8BF /* Build configuration list for PBXNativeTarget "UrevoScale" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				10127EC221A559B05FBB1B4C /* Release */,
+				D38DFD6BA1CD34D1225BB9A8 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 191714A7BBF862DDBAE94305 /* Project object */;
+}
