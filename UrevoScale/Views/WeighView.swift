@@ -7,6 +7,33 @@ struct WeighView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 20) {
+                if appState.isShowingSavedConfirmation,
+                   let confirmation = appState.savedConfirmation {
+                    HStack(spacing: 10) {
+                        Image(systemName: "checkmark.circle.fill")
+                            .foregroundStyle(.green)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("Saved \(WeightFormatting.string(for: confirmation.weightLbs, unit: appState.displayUnit))")
+                                .font(.subheadline.weight(.semibold))
+                            Text(confirmation.timestamp, style: .time)
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                        Spacer(minLength: 0)
+                    }
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 10)
+                    .background(
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(Color.green.opacity(0.12))
+                    )
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(Color.green.opacity(0.35), lineWidth: 1)
+                    )
+                    .transition(.move(edge: .top).combined(with: .opacity))
+                }
+
                 Spacer()
 
                 Text(primaryTitle)
@@ -78,12 +105,15 @@ struct WeighView: View {
             }
             .padding()
             .navigationTitle("Weigh")
+            .animation(.easeInOut(duration: 0.25), value: appState.isShowingSavedConfirmation)
         }
     }
 
     private var activeWeight: Double? {
         switch appState.scanState {
         case let .measuring(current, _):
+            return current
+        case let .confirming(current, _):
             return current
         case let .settled(weight):
             return weight
@@ -100,6 +130,8 @@ struct WeighView: View {
             return "Ready to weigh"
         case .measuring:
             return "Measuring..."
+        case .confirming:
+            return "Confirming stability..."
         case .settled:
             return "Reading saved"
         case let .error(error):
@@ -113,6 +145,8 @@ struct WeighView: View {
         switch appState.scanState {
         case let .measuring(_, samples):
             return "Collecting stable samples (\(samples)/8)."
+        case let .confirming(_, progress):
+            return "Confirming stability... \(Int(progress * 100))%"
         case .settled:
             return "Step off and back on for the next reading."
         case .scanning:

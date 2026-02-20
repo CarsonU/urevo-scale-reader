@@ -2,6 +2,11 @@ import Foundation
 import HealthKit
 import SwiftUI
 
+struct SavedReadingConfirmation: Equatable {
+    let weightLbs: Double
+    let timestamp: Date
+}
+
 @MainActor
 final class AppStateStore: ObservableObject {
     @Published private(set) var scanState: ScanState = .idle
@@ -12,6 +17,8 @@ final class AppStateStore: ObservableObject {
     @Published var displayUnit: DisplayUnit
     @Published var showOnboarding: Bool
     @Published private(set) var hasHealthKitPermission = false
+    @Published private(set) var savedConfirmation: SavedReadingConfirmation?
+    @Published private(set) var isShowingSavedConfirmation = false
 
     let repository: WeightRepositoryProtocol
 
@@ -24,6 +31,7 @@ final class AppStateStore: ObservableObject {
     private var readingTask: Task<Void, Never>?
     private var stateTask: Task<Void, Never>?
     private var timeoutTask: Task<Void, Never>?
+    private var confirmationHideTask: Task<Void, Never>?
 
     private var scanStartedAt: Date?
     private var lastValidReadingAt: Date?
@@ -54,6 +62,7 @@ final class AppStateStore: ObservableObject {
         readingTask?.cancel()
         stateTask?.cancel()
         timeoutTask?.cancel()
+        confirmationHideTask?.cancel()
     }
 
     func handleAppLaunch() {
@@ -202,6 +211,11 @@ final class AppStateStore: ObservableObject {
             break
         case let .measuring(current, samples):
             scanState = .measuring(current: WeightFormatting.roundToTenth(current), samples: samples)
+        case let .confirming(current, progress):
+            scanState = .confirming(
+                current: WeightFormatting.roundToTenth(current),
+                progress: progress
+            )
         case let .settled(weight):
             await persistSettled(weight)
         }
@@ -214,6 +228,7 @@ final class AppStateStore: ObservableObject {
             _ = try repository.save(weightLbs: weight, timestamp: now, source: .live)
             scanState = .settled(weight: weight)
             statusMessage = "Recorded \(String(format: "%.1f", weight)) lbs"
+            showSavedConfirmation(weight: weight, timestamp: now)
 
             if !userDefaults.bool(forKey: AppDefaults.didAttemptAutoHealthKitPrompt) {
                 userDefaults.set(true, forKey: AppDefaults.didAttemptAutoHealthKitPrompt)
@@ -240,6 +255,9 @@ final class AppStateStore: ObservableObject {
             if case .measuring = scanState {
                 return
             }
+            if case .confirming = scanState {
+                return
+            }
             if case .settled = scanState {
                 return
             }
@@ -252,14 +270,14 @@ final class AppStateStore: ObservableObject {
         case .error, .bluetoothUnavailable:
             noScaleDetected = false
             scanState = newState
-        case .measuring, .settled:
+        case .measuring, .confirming, .settled:
             scanState = newState
         }
     }
 
     private func evaluateNoScaleTimeout() {
         switch scanState {
-        case .scanning, .measuring:
+        case .scanning, .measuring, .confirming:
             let now = Date()
             if let lastValidReadingAt,
                now.timeIntervalSince(lastValidReadingAt) > 20 {
@@ -275,6 +293,22 @@ final class AppStateStore: ObservableObject {
             noScaleDetected = false
         default:
             noScaleDetected = false
+        }
+    }
+
+    private func showSavedConfirmation(weight: Double, timestamp: Date) {
+        savedConfirmation = SavedReadingConfirmation(weightLbs: weight, timestamp: timestamp)
+        isShowingSavedConfirmation = true
+        confirmationHideTask?.cancel()
+
+        confirmationHideTask = Task { [weak self] in
+            try? await Task.sleep(nanoseconds: 4_000_000_000)
+            guard !Task.isCancelled else {
+                return
+            }
+            await MainActor.run {
+                self?.isShowingSavedConfirmation = false
+            }
         }
     }
 }
