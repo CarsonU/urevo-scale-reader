@@ -11,6 +11,7 @@ DerivedData/
 
 # Build
 build/
+.DerivedData/
 
 # Swift Package Manager
 .build/
