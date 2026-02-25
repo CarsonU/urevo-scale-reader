@@ -15,6 +15,11 @@ struct RootView: View {
                     Label("History", systemImage: "list.bullet")
                 }
 
+            TrendsView()
+                .tabItem {
+                    Label("Trends", systemImage: "chart.line.uptrend.xyaxis")
+                }
+
             SettingsView()
                 .tabItem {
                     Label("Settings", systemImage: "gearshape")

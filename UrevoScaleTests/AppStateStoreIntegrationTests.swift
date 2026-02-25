@@ -80,7 +80,7 @@ final class AppStateStoreIntegrationTests: XCTestCase {
 
         let entries = try store.repository.fetchAll()
         XCTAssertEqual(entries.count, 1)
-        XCTAssertEqual(entries.first?.weightLbs, 180.0, accuracy: 0.1)
+        XCTAssertEqual(entries.first?.weightLbs ?? 0, 180.0, accuracy: 0.1)
         XCTAssertTrue(store.isShowingSavedConfirmation)
         XCTAssertNotNil(store.savedConfirmation)
     }
@@ -152,7 +152,7 @@ final class AppStateStoreIntegrationTests: XCTestCase {
 
         let entries = try store.repository.fetchAll()
         XCTAssertEqual(entries.count, 2)
-        XCTAssertEqual(store.savedConfirmation?.weightLbs, 181.0, accuracy: 0.2)
+        XCTAssertEqual(store.savedConfirmation?.weightLbs ?? 0, 181.0, accuracy: 0.2)
         XCTAssertTrue(store.isShowingSavedConfirmation)
     }
 

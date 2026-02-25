@@ -11,7 +11,7 @@ final class WeightFormattingTests: XCTestCase {
         let lbs = 176.4
         let kg = DisplayUnit.kg.fromLbs(lbs)
 
-        XCTAssertEqual(kg, 80.013680268, accuracy: 0.000001)
+        XCTAssertEqual(kg, 80.013694068, accuracy: 0.000001)
         XCTAssertEqual(DisplayUnit.kg.toLbs(kg), lbs, accuracy: 0.000001)
     }
 

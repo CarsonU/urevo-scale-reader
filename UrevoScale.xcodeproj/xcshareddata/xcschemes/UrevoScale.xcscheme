@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "8B62EA2E5EF295D26BBFE6B3"
+               BlueprintIdentifier = "3BECBFE1A1F1FBCA9BB9848C"
                BuildableName = "UrevoScale.app"
                BlueprintName = "UrevoScale"
                ReferencedContainer = "container:UrevoScale.xcodeproj">
@@ -30,7 +30,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "8B62EA2E5EF295D26BBFE6B3"
+            BlueprintIdentifier = "3BECBFE1A1F1FBCA9BB9848C"
             BuildableName = "UrevoScale.app"
             BlueprintName = "UrevoScale"
             ReferencedContainer = "container:UrevoScale.xcodeproj">
@@ -41,7 +41,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "5DBBB941C4323FAF443D5BC9"
+               BlueprintIdentifier = "EC78FE46A252CB28E3950D7F"
                BuildableName = "UrevoScaleTests.xctest"
                BlueprintName = "UrevoScaleTests"
                ReferencedContainer = "container:UrevoScale.xcodeproj">
@@ -63,7 +63,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "8B62EA2E5EF295D26BBFE6B3"
+            BlueprintIdentifier = "3BECBFE1A1F1FBCA9BB9848C"
             BuildableName = "UrevoScale.app"
             BlueprintName = "UrevoScale"
             ReferencedContainer = "container:UrevoScale.xcodeproj">
@@ -80,7 +80,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "8B62EA2E5EF295D26BBFE6B3"
+            BlueprintIdentifier = "3BECBFE1A1F1FBCA9BB9848C"
             BuildableName = "UrevoScale.app"
             BlueprintName = "UrevoScale"
             ReferencedContainer = "container:UrevoScale.xcodeproj">

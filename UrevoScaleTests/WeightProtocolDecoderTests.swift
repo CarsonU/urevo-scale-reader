@@ -8,7 +8,8 @@ final class WeightProtocolDecoderTests: XCTestCase {
 
         let weight = ScaleProtocolDecoder.decodeWeight(companyId: companyID, manufacturerData: payload)
 
-        XCTAssertEqual(weight, 290.6, accuracy: 0.0001)
+        XCTAssertNotNil(weight)
+        XCTAssertEqual(weight ?? 0, 290.6, accuracy: 0.0001)
     }
 
     func testDecodeReturnsNilForInvalidModelMarker() {
