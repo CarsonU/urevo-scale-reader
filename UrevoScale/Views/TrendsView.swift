@@ -56,11 +56,47 @@ struct TrendsView: View {
         WeightTrendAnalytics.stats(for: filteredSamples)
     }
 
+    private var chartModel: TrendChartModel {
+        WeightTrendAnalytics.chartModel(
+            from: filteredSamples,
+            unit: appState.displayUnit
+        )
+    }
+
     private var highlightedSample: WeightTrendSample? {
         if let nearest = WeightTrendAnalytics.nearestSample(to: selectedDate, in: filteredSamples) {
             return nearest
         }
         return filteredSamples.last
+    }
+
+    private var highlightedChartPoint: TrendChartPoint? {
+        guard let highlightedSample else {
+            return nil
+        }
+
+        return chartModel.points.first { point in
+            point.id == highlightedSample.id
+        }
+    }
+
+    private var clippedChartPoints: [TrendChartPoint] {
+        chartModel.points.filter { point in
+            point.clipDirection != nil
+        }
+    }
+
+    private var highlightedClipNote: String? {
+        guard let clipDirection = highlightedChartPoint?.clipDirection else {
+            return nil
+        }
+
+        switch clipDirection {
+        case .high:
+            return "This reading is above the chart range and is pinned to the top for readability."
+        case .low:
+            return "This reading is below the chart range and is pinned to the bottom for readability."
+        }
     }
 
     private var rangePicker: some View {
@@ -95,25 +131,41 @@ struct TrendsView: View {
                 .font(.headline)
 
             Chart {
-                ForEach(filteredSamples) { sample in
+                ForEach(chartModel.points) { point in
                     LineMark(
-                        x: .value("Date", sample.timestamp),
-                        y: .value("Weight", displayWeight(sample.weightLbs))
+                        x: .value("Date", point.timestamp),
+                        y: .value("Weight", point.plottedDisplayWeight)
                     )
-                    .interpolationMethod(.catmullRom)
+                    .interpolationMethod(.linear)
                     .foregroundStyle(.primary)
                 }
 
-                if let highlightedSample {
+                ForEach(clippedChartPoints) { point in
+                    if let clipDirection = point.clipDirection {
+                        PointMark(
+                            x: .value("Date", point.timestamp),
+                            y: .value("Weight", point.plottedDisplayWeight)
+                        )
+                        .symbolSize(44)
+                        .foregroundStyle(.primary)
+                        .annotation(position: clipDirection == .high ? .top : .bottom) {
+                            clipBadge(for: clipDirection)
+                        }
+                    }
+                }
+
+                if let highlightedSample,
+                   let highlightedChartPoint {
                     PointMark(
                         x: .value("Date", highlightedSample.timestamp),
-                        y: .value("Weight", displayWeight(highlightedSample.weightLbs))
+                        y: .value("Weight", highlightedChartPoint.plottedDisplayWeight)
                     )
                     .symbolSize(70)
                     .foregroundStyle(.primary)
                 }
             }
             .frame(height: 240)
+            .chartYScale(domain: chartModel.yDomain)
             .chartXAxis {
                 AxisMarks(values: .automatic(desiredCount: 5))
             }
@@ -145,6 +197,12 @@ struct TrendsView: View {
                 }
                 .font(.footnote)
                 .foregroundStyle(.secondary)
+
+                if let highlightedClipNote {
+                    Text(highlightedClipNote)
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                }
             } else {
                 Text("Tap or drag on the chart to inspect a reading.")
                     .font(.footnote)
@@ -214,6 +272,21 @@ struct TrendsView: View {
             RoundedRectangle(cornerRadius: 12)
                 .fill(Color(.secondarySystemBackground))
         )
+    }
+
+    private func clipBadge(for direction: TrendClipDirection) -> some View {
+        Image(systemName: direction == .high ? "arrow.up" : "arrow.down")
+            .font(.caption2.weight(.bold))
+            .foregroundStyle(.secondary)
+            .padding(4)
+            .background(
+                Circle()
+                    .fill(Color(.systemBackground))
+            )
+            .overlay(
+                Circle()
+                    .stroke(Color.primary.opacity(0.25), lineWidth: 1)
+            )
     }
 
     private var netChangeDisplay: String {
