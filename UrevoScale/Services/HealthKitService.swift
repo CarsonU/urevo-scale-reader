@@ -1,12 +1,18 @@
 import Foundation
 import HealthKit
 
+struct BodyMassSample: Equatable {
+    let timestamp: Date
+    let weightLbs: Double
+}
+
 protocol HealthKitServicing {
     var isHealthDataAvailable: Bool { get }
     var bodyMassAuthorizationStatus: HKAuthorizationStatus { get }
 
     func requestAuthorization() async throws -> Bool
     func saveBodyMass(weightLbs: Double, at date: Date) async throws
+    func fetchBodyMassSamples(from startDate: Date, to endDate: Date) async throws -> [BodyMassSample]
 }
 
 enum HealthKitError: LocalizedError {
@@ -86,6 +92,48 @@ final class HealthKitService: HealthKitServicing {
                     continuation.resume(throwing: HealthKitError.authorizationFailed)
                 }
             }
+        }
+    }
+
+    func fetchBodyMassSamples(from startDate: Date, to endDate: Date) async throws -> [BodyMassSample] {
+        guard isHealthDataAvailable else {
+            throw HealthKitError.unavailable
+        }
+        guard let bodyMassType = HKObjectType.quantityType(forIdentifier: .bodyMass) else {
+            throw HealthKitError.typeUnavailable
+        }
+
+        let lowerBound = min(startDate, endDate)
+        let upperBound = max(startDate, endDate)
+        let predicate = HKQuery.predicateForSamples(
+            withStart: lowerBound,
+            end: upperBound,
+            options: [.strictStartDate, .strictEndDate]
+        )
+
+        return try await withCheckedThrowingContinuation { continuation in
+            let query = HKSampleQuery(
+                sampleType: bodyMassType,
+                predicate: predicate,
+                limit: HKObjectQueryNoLimit,
+                sortDescriptors: nil
+            ) { _, samples, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                    return
+                }
+
+                let quantitySamples = (samples as? [HKQuantitySample]) ?? []
+                let result = quantitySamples.map {
+                    BodyMassSample(
+                        timestamp: $0.startDate,
+                        weightLbs: $0.quantity.doubleValue(for: HKUnit.pound())
+                    )
+                }
+                continuation.resume(returning: result)
+            }
+
+            healthStore.execute(query)
         }
     }
 }

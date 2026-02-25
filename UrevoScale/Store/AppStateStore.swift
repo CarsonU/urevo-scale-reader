@@ -7,6 +7,17 @@ struct SavedReadingConfirmation: Equatable {
     let timestamp: Date
 }
 
+private struct HealthKitExportKey: Hashable {
+    let timestampSeconds: Int
+    let weightTenths: Int
+
+    init(timestamp: Date, weightLbs: Double) {
+        self.timestampSeconds = Int(timestamp.timeIntervalSince1970)
+        let roundedWeight = WeightFormatting.roundToTenth(weightLbs)
+        self.weightTenths = Int((roundedWeight * 10).rounded())
+    }
+}
+
 @MainActor
 final class AppStateStore: ObservableObject {
     @Published private(set) var scanState: ScanState = .idle
@@ -17,6 +28,7 @@ final class AppStateStore: ObservableObject {
     @Published var displayUnit: DisplayUnit
     @Published var showOnboarding: Bool
     @Published private(set) var hasHealthKitPermission = false
+    @Published private(set) var isExportingHealthKit = false
     @Published private(set) var savedConfirmation: SavedReadingConfirmation?
     @Published private(set) var isShowingSavedConfirmation = false
 
@@ -184,6 +196,88 @@ final class AppStateStore: ObservableObject {
 
         try csvService.exportWeights(to: outputURL, entries: entries)
         return outputURL
+    }
+
+    func exportAllRecordsToHealthKit() async {
+        guard !isExportingHealthKit else {
+            return
+        }
+
+        isExportingHealthKit = true
+        defer {
+            isExportingHealthKit = false
+        }
+
+        do {
+            let entries = try repository.fetchAll()
+            guard !entries.isEmpty else {
+                statusMessage = "No records to export."
+                healthKitErrorMessage = nil
+                return
+            }
+
+            if !hasHealthKitPermission {
+                let granted = await requestHealthKitAuthorization()
+                if !granted || !hasHealthKitPermission {
+                    statusMessage = "HealthKit authorization is required to export."
+                    return
+                }
+            }
+
+            guard let oldestTimestamp = entries.map(\.timestamp).min(),
+                  let newestTimestamp = entries.map(\.timestamp).max()
+            else {
+                statusMessage = "No records to export."
+                healthKitErrorMessage = nil
+                return
+            }
+
+            let existingSamples = try await healthKitService.fetchBodyMassSamples(
+                from: oldestTimestamp,
+                to: newestTimestamp
+            )
+
+            var existingKeys = Set(existingSamples.map {
+                HealthKitExportKey(timestamp: $0.timestamp, weightLbs: $0.weightLbs)
+            })
+
+            var addedCount = 0
+            var skippedCount = 0
+            var failedCount = 0
+            var lastFailureMessage: String?
+
+            for entry in entries {
+                let key = HealthKitExportKey(timestamp: entry.timestamp, weightLbs: entry.weightLbs)
+
+                if existingKeys.contains(key) {
+                    skippedCount += 1
+                    continue
+                }
+
+                do {
+                    try await healthKitService.saveBodyMass(weightLbs: entry.weightLbs, at: entry.timestamp)
+                    existingKeys.insert(key)
+                    addedCount += 1
+                } catch {
+                    failedCount += 1
+                    lastFailureMessage = error.localizedDescription
+                }
+            }
+
+            statusMessage = "Apple Health export complete: added \(addedCount), skipped \(skippedCount), failed \(failedCount)."
+            if failedCount > 0 {
+                if let lastFailureMessage {
+                    healthKitErrorMessage = "Apple Health export completed with \(failedCount) failure(s). Last error: \(lastFailureMessage)"
+                } else {
+                    healthKitErrorMessage = "Apple Health export completed with \(failedCount) failure(s)."
+                }
+            } else {
+                healthKitErrorMessage = nil
+            }
+        } catch {
+            statusMessage = "Apple Health export failed: \(error.localizedDescription)"
+            healthKitErrorMessage = statusMessage
+        }
     }
 
     func delete(_ entry: WeightEntry) {

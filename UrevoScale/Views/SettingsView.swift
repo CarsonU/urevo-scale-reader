@@ -41,6 +41,17 @@ struct SettingsView: View {
                         }
                     }
 
+                    Button("Export to Apple Health") {
+                        Task {
+                            await appState.exportAllRecordsToHealthKit()
+                        }
+                    }
+                    .disabled(appState.isExportingHealthKit)
+
+                    if appState.isExportingHealthKit {
+                        ProgressView("Exporting…")
+                    }
+
                     if let healthKitErrorMessage = appState.healthKitErrorMessage {
                         Text(healthKitErrorMessage)
                             .font(.footnote)

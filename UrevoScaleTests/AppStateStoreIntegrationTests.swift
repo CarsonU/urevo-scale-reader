@@ -156,9 +156,119 @@ final class AppStateStoreIntegrationTests: XCTestCase {
         XCTAssertTrue(store.isShowingSavedConfirmation)
     }
 
+    func testManualHealthKitExportAddsMissingAndSkipsExistingSamples() async throws {
+        let scanner = MockScaleScanner()
+        let healthKit = MockHealthKitService()
+        healthKit.bodyMassAuthorizationStatus = .sharingAuthorized
+        let store = makeStore(
+            scanner: scanner,
+            stabilizerConfig: StabilizerConfig(windowSize: 4, toleranceLbs: 0.3, minWeightLbs: 5.0, idleTimeoutSec: 3.0),
+            healthKit: healthKit
+        )
+
+        let firstTimestamp = Date(timeIntervalSince1970: 1_700_000_000)
+        let secondTimestamp = Date(timeIntervalSince1970: 1_700_000_060)
+
+        _ = try store.repository.save(weightLbs: 180.0, timestamp: firstTimestamp, source: .csvImport)
+        _ = try store.repository.save(weightLbs: 181.2, timestamp: secondTimestamp, source: .live)
+
+        healthKit.existingSamples = [
+            BodyMassSample(timestamp: firstTimestamp, weightLbs: 180.0)
+        ]
+
+        await store.exportAllRecordsToHealthKit()
+
+        XCTAssertEqual(healthKit.savedSamples.count, 1)
+        XCTAssertEqual(healthKit.savedSamples.first?.timestamp, secondTimestamp)
+        XCTAssertEqual(healthKit.savedSamples.first?.weightLbs ?? 0, 181.2, accuracy: 0.01)
+        XCTAssertEqual(store.statusMessage, "Apple Health export complete: added 1, skipped 1, failed 0.")
+        XCTAssertNil(store.healthKitErrorMessage)
+    }
+
+    func testManualHealthKitExportRequestsAuthorizationWhenNeeded() async throws {
+        let scanner = MockScaleScanner()
+        let healthKit = MockHealthKitService()
+        healthKit.bodyMassAuthorizationStatus = .notDetermined
+        healthKit.requestAuthorizationResult = true
+        let store = makeStore(
+            scanner: scanner,
+            stabilizerConfig: StabilizerConfig(windowSize: 4, toleranceLbs: 0.3, minWeightLbs: 5.0, idleTimeoutSec: 3.0),
+            healthKit: healthKit
+        )
+
+        _ = try store.repository.save(
+            weightLbs: 182.0,
+            timestamp: Date(timeIntervalSince1970: 1_700_000_120),
+            source: .csvImport
+        )
+
+        await store.exportAllRecordsToHealthKit()
+
+        XCTAssertEqual(healthKit.requestAuthorizationCallCount, 1)
+        XCTAssertEqual(healthKit.bodyMassAuthorizationStatus, .sharingAuthorized)
+        XCTAssertEqual(healthKit.savedSamples.count, 1)
+        XCTAssertEqual(store.statusMessage, "Apple Health export complete: added 1, skipped 0, failed 0.")
+        XCTAssertNil(store.healthKitErrorMessage)
+    }
+
+    func testManualHealthKitExportAbortsWhenAuthorizationDenied() async throws {
+        let scanner = MockScaleScanner()
+        let healthKit = MockHealthKitService()
+        healthKit.bodyMassAuthorizationStatus = .notDetermined
+        healthKit.requestAuthorizationResult = false
+        let store = makeStore(
+            scanner: scanner,
+            stabilizerConfig: StabilizerConfig(windowSize: 4, toleranceLbs: 0.3, minWeightLbs: 5.0, idleTimeoutSec: 3.0),
+            healthKit: healthKit
+        )
+
+        _ = try store.repository.save(
+            weightLbs: 183.0,
+            timestamp: Date(timeIntervalSince1970: 1_700_000_180),
+            source: .csvImport
+        )
+
+        await store.exportAllRecordsToHealthKit()
+
+        XCTAssertEqual(healthKit.requestAuthorizationCallCount, 1)
+        XCTAssertTrue(healthKit.savedSamples.isEmpty)
+        XCTAssertEqual(store.statusMessage, "HealthKit authorization is required to export.")
+        XCTAssertEqual(store.healthKitErrorMessage, "HealthKit access was not granted.")
+    }
+
+    func testManualHealthKitExportContinuesWhenOneSaveFails() async throws {
+        let scanner = MockScaleScanner()
+        let healthKit = MockHealthKitService()
+        healthKit.bodyMassAuthorizationStatus = .sharingAuthorized
+        let store = makeStore(
+            scanner: scanner,
+            stabilizerConfig: StabilizerConfig(windowSize: 4, toleranceLbs: 0.3, minWeightLbs: 5.0, idleTimeoutSec: 3.0),
+            healthKit: healthKit
+        )
+
+        let firstTimestamp = Date(timeIntervalSince1970: 1_700_000_240)
+        let secondTimestamp = Date(timeIntervalSince1970: 1_700_000_300)
+        let thirdTimestamp = Date(timeIntervalSince1970: 1_700_000_360)
+
+        _ = try store.repository.save(weightLbs: 180.0, timestamp: firstTimestamp, source: .csvImport)
+        _ = try store.repository.save(weightLbs: 181.0, timestamp: secondTimestamp, source: .csvImport)
+        _ = try store.repository.save(weightLbs: 182.0, timestamp: thirdTimestamp, source: .csvImport)
+
+        healthKit.saveErrorsByKey[
+            MockHealthKitService.SaveKey(timestamp: secondTimestamp, weightLbs: 181.0)
+        ] = MockHealthKitService.MockError.forcedSaveFailure
+
+        await store.exportAllRecordsToHealthKit()
+
+        XCTAssertEqual(healthKit.savedSamples.count, 2)
+        XCTAssertEqual(store.statusMessage, "Apple Health export complete: added 2, skipped 0, failed 1.")
+        XCTAssertEqual(store.healthKitErrorMessage, "Apple Health export completed with 1 failure(s). Last error: Forced save failure.")
+    }
+
     private func makeStore(
         scanner: MockScaleScanner,
-        stabilizerConfig: StabilizerConfig
+        stabilizerConfig: StabilizerConfig,
+        healthKit: MockHealthKitService = MockHealthKitService()
     ) -> AppStateStore {
         let suite = "AppStateStoreIntegrationTests-\(UUID().uuidString)"
         let defaults = UserDefaults(suiteName: suite)!
@@ -167,7 +277,6 @@ final class AppStateStoreIntegrationTests: XCTestCase {
 
         let repository = WeightRepository(container: PersistenceController.makeContainer(inMemory: true))
         let csvService = CSVService(repository: repository)
-        let healthKit = MockHealthKitService()
 
         return AppStateStore(
             scanner: scanner,
@@ -221,13 +330,66 @@ final class MockScaleScanner: ScaleScanner {
 }
 
 final class MockHealthKitService: HealthKitServicing {
+    struct SaveKey: Hashable {
+        let timestampSeconds: Int
+        let weightTenths: Int
+
+        init(timestamp: Date, weightLbs: Double) {
+            self.timestampSeconds = Int(timestamp.timeIntervalSince1970)
+            self.weightTenths = Int((WeightFormatting.roundToTenth(weightLbs) * 10).rounded())
+        }
+    }
+
+    enum MockError: LocalizedError {
+        case forcedSaveFailure
+
+        var errorDescription: String? {
+            switch self {
+            case .forcedSaveFailure:
+                return "Forced save failure."
+            }
+        }
+    }
+
     var isHealthDataAvailable: Bool = true
     var bodyMassAuthorizationStatus: HKAuthorizationStatus = .notDetermined
+    var requestAuthorizationResult = false
+    var requestAuthorizationCallCount = 0
+    var existingSamples: [BodyMassSample] = []
+    var savedSamples: [BodyMassSample] = []
+    var saveErrorsByKey: [SaveKey: Error] = [:]
 
     func requestAuthorization() async throws -> Bool {
+        requestAuthorizationCallCount += 1
+        if requestAuthorizationResult {
+            bodyMassAuthorizationStatus = .sharingAuthorized
+            return true
+        }
+
         bodyMassAuthorizationStatus = .sharingDenied
         return false
     }
 
-    func saveBodyMass(weightLbs _: Double, at _: Date) async throws {}
+    func fetchBodyMassSamples(from startDate: Date, to endDate: Date) async throws -> [BodyMassSample] {
+        let lowerBound = min(startDate, endDate)
+        let upperBound = max(startDate, endDate)
+
+        return existingSamples.filter {
+            $0.timestamp >= lowerBound && $0.timestamp <= upperBound
+        }
+    }
+
+    func saveBodyMass(weightLbs: Double, at date: Date) async throws {
+        let key = SaveKey(timestamp: date, weightLbs: weightLbs)
+        if let error = saveErrorsByKey[key] {
+            throw error
+        }
+
+        savedSamples.append(
+            BodyMassSample(
+                timestamp: date,
+                weightLbs: WeightFormatting.roundToTenth(weightLbs)
+            )
+        )
+    }
 }
