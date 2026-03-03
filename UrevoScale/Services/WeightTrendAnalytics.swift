@@ -1,22 +1,14 @@
 import Foundation
 
-enum TrendClipDirection: Equatable {
-    case low
-    case high
-}
-
 struct TrendChartPoint: Identifiable, Equatable {
     let id: UUID
     let timestamp: Date
-    let rawDisplayWeight: Double
-    let plottedDisplayWeight: Double
-    let clipDirection: TrendClipDirection?
+    let displayWeight: Double
 }
 
 struct TrendChartModel: Equatable {
     let points: [TrendChartPoint]
     let yDomain: ClosedRange<Double>
-    let hasClippedPoints: Bool
 }
 
 enum WeightTrendAnalytics {
@@ -102,61 +94,24 @@ enum WeightTrendAnalytics {
         let sortedSamples = samples.sorted { $0.timestamp < $1.timestamp }
 
         guard !sortedSamples.isEmpty else {
-            return TrendChartModel(points: [], yDomain: 0 ... 1, hasClippedPoints: false)
+            return TrendChartModel(points: [], yDomain: 0 ... 1)
         }
 
         let displayValues = sortedSamples.map { unit.fromLbs($0.weightLbs) }
-        let inlierValues = inlierValues(from: displayValues)
-        let yDomain = yDomain(for: inlierValues, unit: unit)
+        let yDomain = yDomain(for: displayValues, unit: unit)
 
-        var hasClippedPoints = false
-        let points = zip(sortedSamples, displayValues).map { sample, rawDisplayWeight in
-            let clipDirection: TrendClipDirection?
-            if rawDisplayWeight < yDomain.lowerBound {
-                clipDirection = .low
-            } else if rawDisplayWeight > yDomain.upperBound {
-                clipDirection = .high
-            } else {
-                clipDirection = nil
-            }
-
-            if clipDirection != nil {
-                hasClippedPoints = true
-            }
-
+        let points = zip(sortedSamples, displayValues).map { sample, displayWeight in
             return TrendChartPoint(
                 id: sample.id,
                 timestamp: sample.timestamp,
-                rawDisplayWeight: rawDisplayWeight,
-                plottedDisplayWeight: clamped(rawDisplayWeight, to: yDomain),
-                clipDirection: clipDirection
+                displayWeight: displayWeight
             )
         }
 
         return TrendChartModel(
             points: points,
-            yDomain: yDomain,
-            hasClippedPoints: hasClippedPoints
+            yDomain: yDomain
         )
-    }
-
-    private static func inlierValues(from values: [Double]) -> [Double] {
-        let sorted = values.sorted()
-        guard sorted.count >= 5 else {
-            return sorted
-        }
-
-        let q1 = percentile(0.25, in: sorted)
-        let q3 = percentile(0.75, in: sorted)
-        let iqr = q3 - q1
-        let lowerFence = q1 - (1.5 * iqr)
-        let upperFence = q3 + (1.5 * iqr)
-
-        let inliers = sorted.filter { value in
-            value >= lowerFence && value <= upperFence
-        }
-
-        return inliers.isEmpty ? sorted : inliers
     }
 
     private static func yDomain(for values: [Double], unit: DisplayUnit) -> ClosedRange<Double> {
@@ -183,24 +138,6 @@ enum WeightTrendAnalytics {
         return (lowerBound - padding) ... (upperBound + padding)
     }
 
-    private static func percentile(_ percentile: Double, in sortedValues: [Double]) -> Double {
-        guard !sortedValues.isEmpty else {
-            return 0
-        }
-
-        let position = percentile * Double(sortedValues.count - 1)
-        let lowerIndex = Int(floor(position))
-        let upperIndex = Int(ceil(position))
-        if lowerIndex == upperIndex {
-            return sortedValues[lowerIndex]
-        }
-
-        let lowerValue = sortedValues[lowerIndex]
-        let upperValue = sortedValues[upperIndex]
-        let fraction = position - Double(lowerIndex)
-        return lowerValue + ((upperValue - lowerValue) * fraction)
-    }
-
     private static func minimumDomainSpan(for unit: DisplayUnit) -> Double {
         switch unit {
         case .lbs:
@@ -217,9 +154,5 @@ enum WeightTrendAnalytics {
         case .kg:
             return 0.1
         }
-    }
-
-    private static func clamped(_ value: Double, to range: ClosedRange<Double>) -> Double {
-        min(max(value, range.lowerBound), range.upperBound)
     }
 }

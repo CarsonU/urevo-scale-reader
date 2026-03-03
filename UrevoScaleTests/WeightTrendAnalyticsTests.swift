@@ -126,7 +126,7 @@ final class WeightTrendAnalyticsTests: XCTestCase {
         XCTAssertGreaterThan(model.yDomain.lowerBound, 150)
     }
 
-    func testChartModelClipsSingleExtremeHighOutlier() {
+    func testChartModelIncludesSingleExtremeHighOutlierInDomain() {
         let base = Date(timeIntervalSince1970: 1_760_000_000)
         let highOutlier = sample(at: base.addingTimeInterval(5 * day), weight: 230.0)
         let samples = [
@@ -141,13 +141,12 @@ final class WeightTrendAnalyticsTests: XCTestCase {
         let model = WeightTrendAnalytics.chartModel(from: samples, unit: .lbs)
         let outlierPoint = model.points.first { $0.id == highOutlier.id }
 
-        XCTAssertEqual(outlierPoint?.clipDirection, .high)
-        XCTAssertEqual(outlierPoint?.plottedDisplayWeight ?? 0, model.yDomain.upperBound, accuracy: 0.0001)
-        XCTAssertLessThan(model.yDomain.upperBound, 200)
-        XCTAssertTrue(model.hasClippedPoints)
+        XCTAssertEqual(outlierPoint?.displayWeight ?? 0, 230.0, accuracy: 0.0001)
+        XCTAssertTrue(model.yDomain.contains(230.0))
+        XCTAssertGreaterThan(model.yDomain.upperBound, 230.0)
     }
 
-    func testChartModelClipsSingleExtremeLowOutlier() {
+    func testChartModelIncludesSingleExtremeLowOutlierInDomain() {
         let base = Date(timeIntervalSince1970: 1_760_000_000)
         let lowOutlier = sample(at: base.addingTimeInterval(5 * day), weight: 120.0)
         let samples = [
@@ -162,10 +161,9 @@ final class WeightTrendAnalyticsTests: XCTestCase {
         let model = WeightTrendAnalytics.chartModel(from: samples, unit: .lbs)
         let outlierPoint = model.points.first { $0.id == lowOutlier.id }
 
-        XCTAssertEqual(outlierPoint?.clipDirection, .low)
-        XCTAssertEqual(outlierPoint?.plottedDisplayWeight ?? 0, model.yDomain.lowerBound, accuracy: 0.0001)
-        XCTAssertGreaterThan(model.yDomain.lowerBound, 170)
-        XCTAssertTrue(model.hasClippedPoints)
+        XCTAssertEqual(outlierPoint?.displayWeight ?? 0, 120.0, accuracy: 0.0001)
+        XCTAssertTrue(model.yDomain.contains(120.0))
+        XCTAssertLessThan(model.yDomain.lowerBound, 120.0)
     }
 
     func testChartModelEnforcesMinimumSpanInLbs() {
@@ -181,7 +179,6 @@ final class WeightTrendAnalyticsTests: XCTestCase {
         let domainWidth = model.yDomain.upperBound - model.yDomain.lowerBound
 
         XCTAssertEqual(domainWidth, 2.48, accuracy: 0.0001)
-        XCTAssertFalse(model.hasClippedPoints)
     }
 
     func testChartModelEnforcesMinimumSpanInKg() {
@@ -197,10 +194,9 @@ final class WeightTrendAnalyticsTests: XCTestCase {
         let domainWidth = model.yDomain.upperBound - model.yDomain.lowerBound
 
         XCTAssertEqual(domainWidth, 1.24, accuracy: 0.0001)
-        XCTAssertFalse(model.hasClippedPoints)
     }
 
-    func testChartModelDoesNotCapOutliersWhenFewerThanFiveSamples() {
+    func testChartModelIncludesExtremeOutlierWhenFewerThanFiveSamples() {
         let base = Date(timeIntervalSince1970: 1_760_000_000)
         let outlier = sample(at: base.addingTimeInterval(3 * day), weight: 230.0)
         let samples = [
@@ -213,12 +209,12 @@ final class WeightTrendAnalyticsTests: XCTestCase {
         let model = WeightTrendAnalytics.chartModel(from: samples, unit: .lbs)
         let outlierPoint = model.points.first { $0.id == outlier.id }
 
-        XCTAssertNil(outlierPoint?.clipDirection)
+        XCTAssertEqual(outlierPoint?.displayWeight ?? 0, 230.0, accuracy: 0.0001)
+        XCTAssertTrue(model.yDomain.contains(230.0))
         XCTAssertGreaterThan(model.yDomain.upperBound, 230)
-        XCTAssertFalse(model.hasClippedPoints)
     }
 
-    func testChartModelKeepsRawValuesWhileStatsUseAllSamples() {
+    func testChartModelIncludesExtremeOutlierWhenSampleCountIsAtLeastFive() {
         let base = Date(timeIntervalSince1970: 1_760_000_000)
         let outlier = sample(at: base.addingTimeInterval(5 * day), weight: 230.0)
         let samples = [
@@ -234,9 +230,8 @@ final class WeightTrendAnalyticsTests: XCTestCase {
         let stats = WeightTrendAnalytics.stats(for: samples)
         let outlierPoint = model.points.first { $0.id == outlier.id }
 
-        XCTAssertEqual(outlierPoint?.rawDisplayWeight ?? 0, 230.0, accuracy: 0.0001)
-        XCTAssertEqual(outlierPoint?.clipDirection, .high)
-        XCTAssertNotEqual(outlierPoint?.plottedDisplayWeight, outlierPoint?.rawDisplayWeight)
+        XCTAssertEqual(outlierPoint?.displayWeight ?? 0, 230.0, accuracy: 0.0001)
+        XCTAssertTrue(model.yDomain.contains(230.0))
         XCTAssertEqual(stats.maximumLbs ?? 0, 230.0, accuracy: 0.0001)
     }
 

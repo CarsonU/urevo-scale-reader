@@ -80,25 +80,6 @@ struct TrendsView: View {
         }
     }
 
-    private var clippedChartPoints: [TrendChartPoint] {
-        chartModel.points.filter { point in
-            point.clipDirection != nil
-        }
-    }
-
-    private var highlightedClipNote: String? {
-        guard let clipDirection = highlightedChartPoint?.clipDirection else {
-            return nil
-        }
-
-        switch clipDirection {
-        case .high:
-            return "This reading is above the chart range and is pinned to the top for readability."
-        case .low:
-            return "This reading is below the chart range and is pinned to the bottom for readability."
-        }
-    }
-
     private var rangePicker: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 8) {
@@ -134,31 +115,17 @@ struct TrendsView: View {
                 ForEach(chartModel.points) { point in
                     LineMark(
                         x: .value("Date", point.timestamp),
-                        y: .value("Weight", point.plottedDisplayWeight)
+                        y: .value("Weight", point.displayWeight)
                     )
                     .interpolationMethod(.linear)
                     .foregroundStyle(.primary)
-                }
-
-                ForEach(clippedChartPoints) { point in
-                    if let clipDirection = point.clipDirection {
-                        PointMark(
-                            x: .value("Date", point.timestamp),
-                            y: .value("Weight", point.plottedDisplayWeight)
-                        )
-                        .symbolSize(44)
-                        .foregroundStyle(.primary)
-                        .annotation(position: clipDirection == .high ? .top : .bottom) {
-                            clipBadge(for: clipDirection)
-                        }
-                    }
                 }
 
                 if let highlightedSample,
                    let highlightedChartPoint {
                     PointMark(
                         x: .value("Date", highlightedSample.timestamp),
-                        y: .value("Weight", highlightedChartPoint.plottedDisplayWeight)
+                        y: .value("Weight", highlightedChartPoint.displayWeight)
                     )
                     .symbolSize(70)
                     .foregroundStyle(.primary)
@@ -197,12 +164,6 @@ struct TrendsView: View {
                 }
                 .font(.footnote)
                 .foregroundStyle(.secondary)
-
-                if let highlightedClipNote {
-                    Text(highlightedClipNote)
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
-                }
             } else {
                 Text("Tap or drag on the chart to inspect a reading.")
                     .font(.footnote)
@@ -272,21 +233,6 @@ struct TrendsView: View {
             RoundedRectangle(cornerRadius: 12)
                 .fill(Color(.secondarySystemBackground))
         )
-    }
-
-    private func clipBadge(for direction: TrendClipDirection) -> some View {
-        Image(systemName: direction == .high ? "arrow.up" : "arrow.down")
-            .font(.caption2.weight(.bold))
-            .foregroundStyle(.secondary)
-            .padding(4)
-            .background(
-                Circle()
-                    .fill(Color(.systemBackground))
-            )
-            .overlay(
-                Circle()
-                    .stroke(Color.primary.opacity(0.25), lineWidth: 1)
-            )
     }
 
     private var netChangeDisplay: String {
