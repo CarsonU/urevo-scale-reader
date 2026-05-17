@@ -22,6 +22,8 @@ app_settings = {
   'IPHONEOS_DEPLOYMENT_TARGET' => '17.0',
   'GENERATE_INFOPLIST_FILE' => 'NO',
   'CODE_SIGN_ENTITLEMENTS' => 'UrevoScale/Resources/UrevoScale.entitlements',
+  'ASSETCATALOG_COMPILER_APPICON_NAME' => 'AppIcon',
+  'ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME' => 'AccentColor',
   'ENABLE_USER_SCRIPT_SANDBOXING' => 'YES',
   'SWIFT_EMIT_LOC_STRINGS' => 'YES'
 }
@@ -61,6 +63,8 @@ Dir.glob(File.join(ROOT, 'UrevoScale/**/*.swift')).sort.each do |file|
   app_target.add_file_references([ref])
 end
 
+assets_ref = app_group.new_file('UrevoScale/Resources/Assets.xcassets')
+app_target.resources_build_phase.add_file_reference(assets_ref)
 app_group.new_file('UrevoScale/Resources/Info.plist')
 app_group.new_file('UrevoScale/Resources/UrevoScale.entitlements')
 

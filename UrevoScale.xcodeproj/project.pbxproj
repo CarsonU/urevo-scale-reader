@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0A552BB61F6A0735F7AF2E62 /* WeightTrendAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7543CE5CEA1C05E08E5D47 /* WeightTrendAnalytics.swift */; };
+		0C0D3A100000000000000002 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0C0D3A100000000000000001 /* Assets.xcassets */; };
 		1893D696F40B53FB3C4EE618 /* EntrySource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94674D4B771D1E4A7836D144 /* EntrySource.swift */; };
 		1C261B6C790A516E16A0F237 /* DisplayUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EAF0D261CDC86D72F075851 /* DisplayUnit.swift */; };
 		1CAC29FED9CBEC443144E86E /* TrendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493898C698C690CDB9FA70E7 /* TrendsView.swift */; };
@@ -62,6 +63,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0C0D3A100000000000000001 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = UrevoScale/Resources/Assets.xcassets; sourceTree = "<group>"; };
 		1734503308FB4168B4DF8CC9 /* WeightFormatting.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WeightFormatting.swift; path = UrevoScale/Utilities/WeightFormatting.swift; sourceTree = "<group>"; };
 		2E3CCB8304A93113B2E10428 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; name = Info.plist; path = UrevoScale/Resources/Info.plist; sourceTree = "<group>"; };
 		30BAFBFBE54D7F5D8244FF5C /* CSVServiceTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CSVServiceTests.swift; path = UrevoScaleTests/CSVServiceTests.swift; sourceTree = "<group>"; };
@@ -208,6 +210,7 @@
 				638EF7F4182E7FAB1773E827 /* SettingsView.swift */,
 				493898C698C690CDB9FA70E7 /* TrendsView.swift */,
 				E6A16E7ABE2AFDE705E2CD47 /* WeighView.swift */,
+				0C0D3A100000000000000001 /* Assets.xcassets */,
 				2E3CCB8304A93113B2E10428 /* Info.plist */,
 				AFF9788175D49E922FF999E1 /* UrevoScale.entitlements */,
 			);
@@ -311,6 +314,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0C0D3A100000000000000002 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
