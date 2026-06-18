@@ -15,7 +15,13 @@ build/
 
 # Swift Package Manager
 .build/
-.swiftpm/
+.swiftpm/xcode/
 
 # macOS
 .DS_Store
+.DS_Store?
+._*
+
+# Xcode generated
+*.moved-aside
+*.orig
