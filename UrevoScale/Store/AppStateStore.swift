@@ -5,6 +5,7 @@ import SwiftUI
 struct SavedReadingConfirmation: Equatable {
     let weightLbs: Double
     let timestamp: Date
+    let deltaLbs: Double?
 }
 
 private struct HealthKitExportKey: Hashable {
@@ -317,12 +318,14 @@ final class AppStateStore: ObservableObject {
 
     private func persistSettled(_ weight: Double) async {
         let now = Date()
+        let previousLbs = (try? repository.fetchAll())?.first?.weightLbs
+        let deltaLbs = previousLbs.map { WeightFormatting.roundToTenth(weight) - WeightFormatting.roundToTenth($0) }
 
         do {
             _ = try repository.save(weightLbs: weight, timestamp: now, source: .live)
             scanState = .settled(weight: weight)
             statusMessage = "Recorded \(String(format: "%.1f", weight)) lbs"
-            showSavedConfirmation(weight: weight, timestamp: now)
+            showSavedConfirmation(weight: weight, timestamp: now, deltaLbs: deltaLbs)
 
             if !userDefaults.bool(forKey: AppDefaults.didAttemptAutoHealthKitPrompt) {
                 userDefaults.set(true, forKey: AppDefaults.didAttemptAutoHealthKitPrompt)
@@ -390,8 +393,8 @@ final class AppStateStore: ObservableObject {
         }
     }
 
-    private func showSavedConfirmation(weight: Double, timestamp: Date) {
-        savedConfirmation = SavedReadingConfirmation(weightLbs: weight, timestamp: timestamp)
+    private func showSavedConfirmation(weight: Double, timestamp: Date, deltaLbs: Double?) {
+        savedConfirmation = SavedReadingConfirmation(weightLbs: weight, timestamp: timestamp, deltaLbs: deltaLbs)
         isShowingSavedConfirmation = true
         confirmationHideTask?.cancel()
 

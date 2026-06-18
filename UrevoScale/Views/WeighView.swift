@@ -1,20 +1,49 @@
+import SwiftData
 import SwiftUI
 import UIKit
 
 struct WeighView: View {
     @EnvironmentObject private var appState: AppStateStore
+    @Query(sort: \WeightEntry.timestamp, order: .reverse) private var entries: [WeightEntry]
 
     var body: some View {
         NavigationStack {
             VStack(spacing: 20) {
+                if let lastEntry = entries.first {
+                    HStack(spacing: 10) {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("Last recorded")
+                                .font(.caption.weight(.semibold))
+                                .foregroundStyle(.secondary)
+                            Text(WeightFormatting.string(for: lastEntry.weightLbs, unit: appState.displayUnit))
+                                .font(.title3.weight(.semibold))
+                        }
+                        Spacer(minLength: 0)
+                        Text(lastEntry.timestamp, style: .date)
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                    }
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 10)
+                    .background(
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(Color(.secondarySystemBackground))
+                    )
+                }
+
                 if appState.isShowingSavedConfirmation,
                    let confirmation = appState.savedConfirmation {
                     HStack(spacing: 10) {
-                        Image(systemName: "checkmark.circle.fill")
-                            .foregroundStyle(.green)
+                        Image(systemName: confirmationSymbol(for: confirmation))
+                            .foregroundStyle(confirmationColor(for: confirmation))
                         VStack(alignment: .leading, spacing: 2) {
                             Text("Saved \(WeightFormatting.string(for: confirmation.weightLbs, unit: appState.displayUnit))")
                                 .font(.subheadline.weight(.semibold))
+                            if let deltaText = deltaText(for: confirmation) {
+                                Text(deltaText)
+                                    .font(.caption.weight(.semibold))
+                                    .foregroundStyle(confirmationColor(for: confirmation))
+                            }
                             Text(confirmation.timestamp, style: .time)
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
@@ -25,11 +54,11 @@ struct WeighView: View {
                     .padding(.vertical, 10)
                     .background(
                         RoundedRectangle(cornerRadius: 12)
-                            .fill(Color.green.opacity(0.12))
+                            .fill(confirmationColor(for: confirmation).opacity(0.12))
                     )
                     .overlay(
                         RoundedRectangle(cornerRadius: 12)
-                            .stroke(Color.green.opacity(0.35), lineWidth: 1)
+                            .stroke(confirmationColor(for: confirmation).opacity(0.35), lineWidth: 1)
                     )
                     .transition(.move(edge: .top).combined(with: .opacity))
                 }
@@ -173,5 +202,28 @@ struct WeighView: View {
 
     private func displayWeight(_ lbs: Double) -> Double {
         appState.displayUnit.fromLbs(lbs)
+    }
+
+    private func confirmationColor(for confirmation: SavedReadingConfirmation) -> Color {
+        guard let delta = confirmation.deltaLbs, delta != 0 else {
+            return .secondary
+        }
+        return delta < 0 ? .green : .red
+    }
+
+    private func confirmationSymbol(for confirmation: SavedReadingConfirmation) -> String {
+        guard let delta = confirmation.deltaLbs, delta != 0 else {
+            return "checkmark.circle.fill"
+        }
+        return delta < 0 ? "arrow.down" : "arrow.up"
+    }
+
+    private func deltaText(for confirmation: SavedReadingConfirmation) -> String? {
+        guard let delta = confirmation.deltaLbs, delta != 0 else {
+            return nil
+        }
+        let displayDelta = appState.displayUnit.fromLbs(abs(delta))
+        let sign = delta < 0 ? "−" : "+"
+        return String(format: "%@%.1f %@", sign, displayDelta, appState.displayUnit.symbol)
     }
 }

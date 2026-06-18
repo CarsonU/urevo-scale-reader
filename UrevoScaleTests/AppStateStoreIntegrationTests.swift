@@ -83,6 +83,7 @@ final class AppStateStoreIntegrationTests: XCTestCase {
         XCTAssertEqual(entries.first?.weightLbs ?? 0, 180.0, accuracy: 0.1)
         XCTAssertTrue(store.isShowingSavedConfirmation)
         XCTAssertNotNil(store.savedConfirmation)
+        XCTAssertNil(store.savedConfirmation?.deltaLbs)
     }
 
     func testSavedConfirmationAutoHidesAfterTimeout() async throws {
@@ -153,6 +154,7 @@ final class AppStateStoreIntegrationTests: XCTestCase {
         let entries = try store.repository.fetchAll()
         XCTAssertEqual(entries.count, 2)
         XCTAssertEqual(store.savedConfirmation?.weightLbs ?? 0, 181.0, accuracy: 0.2)
+        XCTAssertEqual(store.savedConfirmation?.deltaLbs ?? 0, 1.0, accuracy: 0.1)
         XCTAssertTrue(store.isShowingSavedConfirmation)
     }
 
